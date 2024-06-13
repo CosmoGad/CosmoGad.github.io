@@ -22,17 +22,39 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
+        .controls {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
     <video id="videoPlayer" controls autoplay></video>
+    <div class="controls">
+        <button onclick="likeVideo()">👍 Like</button>
+        <button onclick="commentVideo()">💬 Comment</button>
+    </div>
 
     <script>
         const videos = [
             'https://static.videezy.com/system/resources/previews/000/048/186/original/The_Cat_Lies.mp4',
             'https://cdn.pixabay.com/video/2021/02/17/65438-514139134_large.mp4',
             'https://cdn.pixabay.com/video/2016/05/11/3092-166221773_tiny.mp4',
-            'https://cdn.pixabay.com/video/2018/09/18/18284-291012863_tiny.mp4',
             'https://cdn.pixabay.com/video/2018/09/18/18284-291012863_tiny.mp4',
             'https://static.videezy.com/system/resources/previews/000/046/328/original/sleeping_kitty.mp4'
         ];
@@ -74,6 +96,19 @@
 
             document.addEventListener('touchmove', handleTouchMove);
             document.addEventListener('touchend', cleanup, { once: true });
+        }
+
+        function likeVideo() {
+            alert('You liked the video!');
+            // Здесь можно добавить код для отправки лайка на сервер
+        }
+
+        function commentVideo() {
+            const comment = prompt('Enter your comment:');
+            if (comment) {
+                alert(`You commented: ${comment}`);
+                // Здесь можно добавить код для отправки комментария на сервер
+            }
         }
 
         window.onload = () => {
