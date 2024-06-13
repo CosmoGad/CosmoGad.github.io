@@ -14,27 +14,17 @@
             height: 100vh;
             margin: 0;
             background-color: #f0f0f0;
-        }
-        header {
-            width: 100%;
-            padding: 20px 0;
-            text-align: center;
-            background-color: #333;
-            color: #fff;
-            font-size: 24px;
-            font-weight: bold;
+            overflow: hidden;
         }
         video {
             width: 90%;
             max-width: 600px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-    <header>CryptoClips</header>
     <video id="videoPlayer" controls autoplay></video>
 
     <script>
@@ -42,6 +32,7 @@
             'https://static.videezy.com/system/resources/previews/000/048/186/original/The_Cat_Lies.mp4',
             'https://cdn.pixabay.com/video/2021/02/17/65438-514139134_large.mp4',
             'https://cdn.pixabay.com/video/2016/05/11/3092-166221773_tiny.mp4',
+            'https://cdn.pixabay.com/video/2018/09/18/18284-291012863_tiny.mp4',
             'https://cdn.pixabay.com/video/2018/09/18/18284-291012863_tiny.mp4',
             'https://static.videezy.com/system/resources/previews/000/046/328/original/sleeping_kitty.mp4'
         ];
@@ -64,26 +55,31 @@
 
         function handleSwipe(event) {
             const threshold = 50;
-            const startY = event.changedTouches[0].pageY;
-            const endY = event.changedTouches[0].clientY;
+            const startY = event.touches[0].clientY;
 
-            if (startY - endY > threshold) {
-                loadNextVideo();
-            } else if (endY - startY > threshold) {
-                loadPreviousVideo();
+            function handleTouchMove(e) {
+                const endY = e.touches[0].clientY;
+                if (startY - endY > threshold) {
+                    loadNextVideo();
+                    cleanup();
+                } else if (endY - startY > threshold) {
+                    loadPreviousVideo();
+                    cleanup();
+                }
             }
+
+            function cleanup() {
+                document.removeEventListener('touchmove', handleTouchMove);
+            }
+
+            document.addEventListener('touchmove', handleTouchMove);
+            document.addEventListener('touchend', cleanup, { once: true });
         }
 
         window.onload = () => {
             loadVideo(currentVideoIndex);
-            document.getElementById('videoPlayer').addEventListener('touchstart', (e) => {
-                e.target.addEventListener('touchmove', handleSwipe, { once: true });
-            });
+            document.addEventListener('touchstart', handleSwipe);
         };
     </script>
 </body>
 </html>
-
-</body>
-</html>
-
