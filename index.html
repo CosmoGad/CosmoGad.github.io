@@ -31,26 +31,11 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             margin-bottom: 20px;
         }
-        button {
-            padding: 12px 24px;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            background-color: #007BFF;
-            color: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s ease;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
     </style>
 </head>
 <body>
     <header>CryptoClips</header>
     <video id="videoPlayer" controls autoplay></video>
-    <button onclick="loadNextVideo()">Next Video</button>
 
     <script>
         const videos = [
@@ -62,14 +47,43 @@
         ];
         let currentVideoIndex = 0;
 
-        function loadNextVideo() {
-            currentVideoIndex = (currentVideoIndex + 1) % videos.length;
-            document.getElementById('videoPlayer').src = videos[currentVideoIndex];
+        function loadVideo(index) {
+            document.getElementById('videoPlayer').src = videos[index];
             document.getElementById('videoPlayer').play();
         }
 
-        window.onload = loadNextVideo;
+        function loadNextVideo() {
+            currentVideoIndex = (currentVideoIndex + 1) % videos.length;
+            loadVideo(currentVideoIndex);
+        }
+
+        function loadPreviousVideo() {
+            currentVideoIndex = (currentVideoIndex - 1 + videos.length) % videos.length;
+            loadVideo(currentVideoIndex);
+        }
+
+        function handleSwipe(event) {
+            const threshold = 50;
+            const startY = event.changedTouches[0].pageY;
+            const endY = event.changedTouches[0].clientY;
+
+            if (startY - endY > threshold) {
+                loadNextVideo();
+            } else if (endY - startY > threshold) {
+                loadPreviousVideo();
+            }
+        }
+
+        window.onload = () => {
+            loadVideo(currentVideoIndex);
+            document.getElementById('videoPlayer').addEventListener('touchstart', (e) => {
+                e.target.addEventListener('touchmove', handleSwipe, { once: true });
+            });
+        };
     </script>
+</body>
+</html>
+
 </body>
 </html>
 
