@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoClips</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        video {
+            width: 80%;
+            max-width: 600px;
+            border: 2px solid #333;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <video id="videoPlayer" controls autoplay></video>
+    <button onclick="loadNextVideo()">Next Video</button>
+
+    <script>
+        const videos = [
+        'https://static.videezy.com/system/resources/previews/000/048/186/original/The_Cat_Lies.mp4',
+            'https://cdn.pixabay.com/video/2021/02/17/65438-514139134_large.mp4',
+                'https://cdn.pixabay.com/video/2016/05/11/3092-166221773_tiny.mp4',
+                    'https://cdn.pixabay.com/video/2018/09/18/18284-291012863_tiny.mp4',
+                        'https://cdn.pixabay.com/video/2018/09/18/18284-291012863_tiny.mp4',
+                            'https://static.videezy.com/system/resources/previews/000/046/328/original/sleeping_kitty.mp4'
+        ];
+        let currentVideoIndex = 0;
+
+        function loadNextVideo() {
+            currentVideoIndex = (currentVideoIndex + 1) % videos.length;
+            document.getElementById('videoPlayer').src = videos[currentVideoIndex];
+            document.getElementById('videoPlayer').play();
+        }
+
+        window.onload = loadNextVideo;
+    </script>
+</body>
+</html>
